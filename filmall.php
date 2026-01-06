@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>All film</title>
 </head>
 
@@ -25,22 +25,53 @@
                 <?php
                 if (!isset($_SESSION['username'])) {
                     echo "<li><a href=\"login.php\">Connexion</a></li>";
-                }/* else {
-               echo "<li><a href=\"deconnexion.php?address=connexion.php\">Déconnexion</a></li>";
-           }*/ ?>
+                }
+                ?>
             </ul>
         </nav>
     </header>
     <main>
-        <?php
-        $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
-        $request_read_film = $bdd->prepare('SELECT titre, realisateur, genre, duree FROM fiche_film');
-        $request_read_film->execute([]);
+        <div class="container">
+            <h2>Les derniers films ajoutés :</h2>
+            <div class="card_container">
+                <?php
+                $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
 
-        while ($data = $request_read_film->fetch()) {
-        echo 'Titre :' . $data['titre'] . '<br>' . 'Produit par :' . $data['realisateur'] . '<br>' . 'Genre :' . $data['genre'] . '<br>' . 'Durée du film :' . $data['duree'] . ' min' . '<br>' . '<br>';
-        }
-        ?>
+                $request = $bdd->query('SELECT id, titre, realisateur, genre, duree, img_path FROM fiche_film');
+
+                while ($data = $request->fetch()) {
+                    $dureeEnHeure = date("G\h i\m\i\\n", mktime(0, $data['duree'], 0, 0, 0, 0));
+
+                    if ($data['img_path'] == "") {
+                        echo
+                            "<div class=\"card\">
+                            <div class=\"card__content\"> 
+                                <p>{$data['titre']}</p>
+                                <p>{$data['realisateur']}</p>
+                                <p>{$data['genre']}</p>
+                                <p>{$dureeEnHeure}</p>
+                                <a href=\"fichefilm.php?id={$data['id']}\">Voir plus</a>
+                            </div>
+                        </div>";
+                    } else {
+                        echo
+                            "<div class=\"card\">
+                            <div class=\"card__img\">
+                                <img src=\"{$data['img_path']}\" alt=\"Image du film\">
+                            </div>                 
+                            <div class=\"card__content\"> 
+                                <p>Titre : {$data['titre']}</p>
+                                <p>Réalisateur : {$data['realisateur']}</p>
+                                <p>Genre : {$data['genre']}</p>
+                                <p>Durée : {$dureeEnHeure}</p>
+                                <a href=\"fichefilm.php?id={$data['id']}\">Voir plus</a>
+                            </div>
+                        </div>";
+                    }
+                }
+                ?>
+            </div>
+        </div>
     </main>
 </body>
 

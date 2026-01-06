@@ -51,7 +51,7 @@
                                 <p>{$data['realisateur']}</p>
                                 <p>{$data['genre']}</p>
                                 <p>{$dureeEnHeure}</p>
-                                <a href=\"fichefilm.php?id={$data['id']}\">Voir plus</a>
+                                <a href=\"articlefilm.php?id={$data['id']}\">Voir plus</a>
                             </div>
                         </div>";
                     } else {
@@ -65,7 +65,7 @@
                                 <p>Réalisateur : {$data['realisateur']}</p>
                                 <p>Genre : {$data['genre']}</p>
                                 <p>Durée : {$dureeEnHeure}</p>
-                                <a href=\"fichefilm.php?id={$data['id']}\">Voir plus</a>
+                                <a href=\"articlefilm.php?id={$data['id']}\">Voir plus</a>
                             </div>
                         </div>";
                     }

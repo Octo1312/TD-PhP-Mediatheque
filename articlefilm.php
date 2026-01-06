@@ -36,19 +36,38 @@
             <?php
             $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
 
-            $request = $bdd->prepare('SELECT id, titre, realisateur, genre, duree, synopsis FROM fiche_film WHERE id = :id');
+            $request = $bdd->prepare('SELECT id, titre, realisateur, genre, duree, synopsis, img_path FROM fiche_film WHERE id = :id');
 
             $request->execute(['id' => $_GET['id']]);
 
             while ($data = $request->fetch()) {
-                echo
-                    "<div>
-                    <p>{$data['titre']}</p>
-                    <p>{$data['realisateur']}</p>
-                    <p>{$data['genre']}</p>
-                    <p>{$data['duree']}</p>
-                    <p>{$data['synopsis']}</p>
-                </div>";
+                $dureeEnHeure = date("G\h i\m\i\\n", mktime(0, $data['duree'], 0, 0, 0, 0));
+                if ($data['img_path'] == "") {
+                    echo
+                        "<div class=\"card\">
+                            <div class=\"card__content\"> 
+                                <p>{$data['titre']}</p>
+                                <p>{$data['realisateur']}</p>
+                                <p>{$data['genre']}</p>
+                                <p>{$dureeEnHeure}</p>
+                                <p>{$data['synopsis']}</p>
+                            </div>
+                        </div>";
+                } else {
+                    echo
+                        "<div class=\"card\">
+                            <div class=\"card__img\">
+                                <img src=\"{$data['img_path']}\" alt=\"Image du film\">
+                            </div>                 
+                            <div class=\"card__content\"> 
+                                <p>Titre : {$data['titre']}</p>
+                                <p>Réalisateur : {$data['realisateur']}</p>
+                                <p>Genre : {$data['genre']}</p>
+                                <p>Durée : {$dureeEnHeure}</p>
+                                <p>Synopsis : {$data['synopsis']}</p>
+                            </div>
+                    </div>";
+                }
             }
             ?>
         </div>

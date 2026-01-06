@@ -6,11 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Mediathèque</title>
+    <title>Article film</title>
 </head>
 
 <body>
-
     <header>
         <nav>
             <ul>
@@ -27,40 +26,34 @@
                 if (!isset($_SESSION['username'])) {
                     echo "<li><a href=\"login.php\">Connexion</a></li>";
                 }/* else {
-                 echo "<li><a href=\"deconnexion.php?address=connexion.php\">Déconnexion</a></li>";
-             }*/ ?>
+               echo "<li><a href=\"deconnexion.php?address=connexion.php\">Déconnexion</a></li>";
+           }*/ ?>
             </ul>
         </nav>
     </header>
 
-    <a href="register.php">Register</a>
-    <br>
+    <main>
+        <div class="container">
+            <?php
+            $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
 
+            $request = $bdd->prepare('SELECT id, titre, realisateur, genre, duree, synopsis FROM fiche_film WHERE id = :id');
 
-    <a href="filmmaker.php">Ajouter une fiche de film</a>
-    <br>
+            $request->execute(['id' => $_GET['id']]);
 
-    <div class="container">
-    <?php
-    $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
-    $request_read_film = $bdd->prepare('SELECT id, titre, realisateur, genre, duree FROM fiche_film LIMIT 3');
-    $request_read_film->execute([]);
-    while ($data = $request_read_film->fetch()) {
-        echo
-            "<div class=\"card\">
-                <div class=\"card_img\">
-                </div>
-                <div class=\"card_content\">
+            while ($data = $request->fetch()) {
+                echo
+                    "<div>
                     <p>{$data['titre']}</p>
                     <p>{$data['realisateur']}</p>
                     <p>{$data['genre']}</p>
                     <p>{$data['duree']}</p>
-                    <a href=\"articlefilm.php?id={$data['id']}\">Voir plus...</a>
-                </div>
-            </div>";
-        }
-        ?>
-    </div>    
+                    <p>{$data['synopsis']}</p>
+                </div>";
+            }
+            ?>
+        </div>
+    </main>
 </body>
 
 </html>

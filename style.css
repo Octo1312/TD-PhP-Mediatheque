@@ -1,4 +1,10 @@
-.card {
-    display: flex;
-    flex-direction: row;
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+}
+
+.card_content {
+    text-align: center;
 }

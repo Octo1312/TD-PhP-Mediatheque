@@ -1,58 +1,62 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Mediathèque</title>
 </head>
+
 <body>
-    <a href="filmall.php">Film all</a>
-    <br>
-    <a href="filmmaker.php">Film maker</a>
-    <br>
+
+    <header>
+        <nav>
+            <ul>
+                <?php if (isset($_SESSION['username'])) {
+                    echo "<li>Bonjour {$_SESSION['username']}</li>";
+                } ?>
+                <li><a href="index.php">Accueil</a></li>
+                <?php if (isset($_SESSION['username'])) {
+                    echo "<li><a href=\"filmmaker.php\">Ajouter un film</a></li>";
+                }
+                ; ?>
+                <li><a href="filmall.php">Les films</a></li>
+                <?php
+                if (!isset($_SESSION['username'])) {
+                    echo "<li><a href=\"login.php\">Connexion</a></li>";
+                }/* else {
+                 echo "<li><a href=\"deconnexion.php?address=connexion.php\">Déconnexion</a></li>";
+             }*/ ?>
+            </ul>
+        </nav>
+    </header>
+
     <a href="register.php">Register</a>
     <br>
 
-    <?php 
-    $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
 
-    // $request_read = $bdd->prepare('SELECT prenom, nom FROM user');
-    // $request_read->execute([]);
-
-    // while($data = $request_read->fetch()) {
-    //     echo ''.$data['prenom'].'   '.$data['nom'] . '<br>';
-    // }
-    ?>
-
-    <!-- <form action="index.php" method="POST">
-        <label for="name">Votre nom est :</label>
-        <input type="text" name="nom">
-        <label for="prenom">Votre prénom est :</label>
-        <input type="text" name="prenom">
-        <input type="submit">
-    </form> -->
-    
-    <?php 
-    /*
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-
-    $request_insert = $bdd->prepare('INSERT INTO user(nom,prenom) VALUES (?,?)');
-    $request_insert->execute(array($nom, $prenom));
-    */
-    ?>
-    
     <a href="filmmaker.php">Ajouter une fiche de film</a>
     <br>
-
-    <?php 
+    <?php
+    $bdd = new PDO('mysql:host=localhost;dbname=mediatheque;charset=utf8', 'root');
     $request_read_film = $bdd->prepare('SELECT titre, realisateur, genre, duree FROM fiche_film LIMIT 3');
     $request_read_film->execute([]);
-
-    while($data = $request_read_film->fetch()) {
-        echo 'Titre :' .$data['titre'] . '<br>' . 'Produit par :' .$data['realisateur'] .'<br>' . 'Genre :' .$data['genre'] .'<br>' . 'Durée du film :' .$data['duree'] . ' min' . '<br>' . '<br>';
-    }
-    ?>
-
+    while ($data = $request_read_film->fetch()) {
+        echo
+            "<div class=\"card\">
+                <div class=\"card_img\">
+                </div>
+                <div class=\"card_content\">
+                    <p>{$data['titre']}</p>
+                    <p>{$data['realisateur']}</p>
+                    <p>{$data['genre']}</p>
+                    <p>{$data['duree']}</p>
+                </div>
+            </div>";
+        }
+        ?>
 </body>
+
 </html>

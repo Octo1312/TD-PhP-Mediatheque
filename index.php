@@ -24,8 +24,14 @@
                 ; ?>
                 <li><a href="filmall.php">Les films</a></li>
                 <?php
+                if (!isset($_SESSION["username"])) {
+                    echo "<li><a href=\"register.php\">S'inscrire ici</a></li>";
+                }
                 if (!isset($_SESSION['username'])) {
                     echo "<li><a href=\"login.php\">Connexion</a></li>";
+                }
+                if (isset($_SESSION["username"])) {
+                    echo "<li><a href=\"deconnexion.php?address=index.php\">Se déconnecter</a></li>";
                 } ?>
             </ul>
         </nav>
@@ -74,11 +80,5 @@
             </div>
         </div>
     </main>
-    <footer>
-        <a href="register.php">Register</a>
-        <br>
-    </footer>
-
 </body>
-
 </html>

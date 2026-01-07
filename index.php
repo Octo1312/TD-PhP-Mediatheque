@@ -60,7 +60,7 @@
                             <p>Réalisateur : <?= $data['realisateur'] ?></p>
                             <p>Genre : <?= $data['genre'] ?></p>
                             <p>Durée : <?= $dureeEnHeure ?></p>
-                            <a href="articlefilm.php?id<?= $data['id'] ?>">Voir plus</a>
+                            <a href="articlefilm.php?id=<?=$data['id']?>">Voir plus</a>
                         </div>
                     </div>
                     <?php

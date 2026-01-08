@@ -67,8 +67,7 @@
             $resultUserId->execute(['id' => $_SESSION['id']]);
 
             $userId = $resultUserId->fetch();
-            var_dump($userId);
-
+            
             if ($imageInfo !== false) {
 
                 $extension = pathinfo($originalName, PATHINFO_EXTENSION);
